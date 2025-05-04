@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Literacy Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .quiz-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin: 20px 0;
+    }
+    .options label {
+      display: block;
+      margin: 5px 0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Health Literacy Quiz</h1>
+    <form id="quizForm">
+      <div class="question">
+        <p><strong>1. Which of the following best defines health literacy?</strong></p>
+        <div class="options">
+          <label><input type="radio" name="q1" value="A"> A. The ability to read and write</label>
+          <label><input type="radio" name="q1" value="B"> B. The ability to memorize medical terminology</label>
+          <label><input type="radio" name="q1" value="C"> C. The degree to which individuals can find, understand, and use health information and services to inform decisions</label>
+          <label><input type="radio" name="q1" value="D"> D. The responsibility of providers to teach their patients</label>
+        </div>
+      </div>
+      <div class="question">
+        <p><strong>2. Which of the following best describes medication literacy?</strong></p>
+        <div class="options">
+          <label><input type="radio" name="q2" value="A"> A. General knowledge of drugs and their history</label>
+          <label><input type="radio" name="q2" value="B"> B. The ability to spell drug names</label>
+          <label><input type="radio" name="q2" value="C"> C. The ability to make safe and informed decisions about medication use</label>
+          <label><input type="radio" name="q2" value="D"> D. Health literacy applied to non-prescription medications only</label>
+        </div>
+      </div>
+      <div class="question">
+        <p><strong>3. How does literacy differ from health literacy?</strong></p>
+        <div class="options">
+          <label><input type="radio" name="q3" value="A"> A. They are identical terms</label>
+          <label><input type="radio" name="q3" value="B"> B. Literacy is specific to medical knowledge</label>
+          <label><input type="radio" name="q3" value="C"> C. Literacy involves reading/writing, while health literacy involves decision-making about health</label>
+          <label><input type="radio" name="q3" value="D"> D. Health literacy includes numeracy, but literacy does not</label>
+        </div>
+      </div>
+      <div class="question">
+        <p><strong>4. Which of the following is TRUE regarding low health literacy and patient outcomes?</strong></p>
+        <div class="options">
+          <label><input type="radio" name="q4" value="A"> A. It has no measurable impact on outcomes</label>
+          <label><input type="radio" name="q4" value="B"> B. It is associated with lower emergency room visits</label>
+          <label><input type="radio" name="q4" value="C"> C. It leads to worse outcomes, higher hospitalizations, and increased mortality</label>
+          <label><input type="radio" name="q4" value="D"> D. It improves medication adherence due to fear of side effects</label>
+        </div>
+      </div>
+      <div class="question">
+        <p><strong>5. Which populations are MOST at risk for low health literacy? (Select all that apply)</strong></p>
+        <div class="options">
+          <label><input type="checkbox" name="q5" value="A"> A. Elderly patients over 65</label>
+          <label><input type="checkbox" name="q5" value="B"> B. Individuals with limited English proficiency</label>
+          <label><input type="checkbox" name="q5" value="C"> C. Patients with PhDs</label>
+          <label><input type="checkbox" name="q5" value="D"> D. People living in poverty</label>
+          <label><input type="checkbox" name="q5" value="E"> E. People with Medicaid or no insurance</label>
+        </div>
+      </div>
+      <button type="button" onclick="checkAnswers()">Submit Quiz</button>
+      <div class="result" id="result"></div>
+    </form>
+  </div>
+  <script>
+    function checkAnswers() {
+      const correctAnswers = {
+        q1: "C",
+        q2: "C",
+        q3: "C",
+        q4: "C"
+      };
+      const correctCheckboxAnswers = {
+        q5: ["A", "B", "D", "E"]
+      };
+      let score = 0;
+      let total = Object.keys(correctAnswers).length + Object.keys(correctCheckboxAnswers).length;
+
+      for (let key in correctAnswers) {
+        const selected = document.querySelector(`input[name="${key}"]:checked`);
+        if (selected && selected.value === correctAnswers[key]) {
+          score++;
+        }
+      }
+
+      for (let key in correctCheckboxAnswers) {
+        const selectedOptions = [...document.querySelectorAll(`input[name="${key}"]:checked`)].map(el => el.value);
+        const correctSet = new Set(correctCheckboxAnswers[key]);
+        const selectedSet = new Set(selectedOptions);
+        const isCorrect = correctSet.size === selectedSet.size && [...correctSet].every(val => selectedSet.has(val));
+        if (isCorrect) score++;
+      }
+
+      document.getElementById("result").innerText = `You scored ${score} out of ${total}`;
+    }
+  </script>
+</body>
+</html>
